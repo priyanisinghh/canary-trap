@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Alerts{% endblock %}
+
+{% block content %}
+<h1>Alerts</h1>
+<p class="muted">
+  Every time a canary file is opened, it appears here with the date, time and device.
+  Red rows come from someone other than you. Click <strong>This was me</strong> if the open was yours.
+</p>
+
+<div class="filters">
+  <button class="chip on" data-filter="all">All</button>
+  <button class="chip" data-filter="others">Other users</button>
+  <button class="chip" data-filter="mine">My devices</button>
+  <input type="search" id="search" class="search" placeholder="Search file, folder or IP…" aria-label="Search alerts">
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Date &amp; time</th><th>Token file</th><th>Folder</th>
+        <th>Device / IP</th><th>Who?</th><th>Severity</th><th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="alerts-body">
+      <tr><td colspan="7" class="muted">Loading…</td></tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+{% endblock %}

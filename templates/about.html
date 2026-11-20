@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+
+{% block content %}
+<h1>About CanaryTrap</h1>
+
+<div class="card">
+  <h2>What is a Canary Token?</h2>
+  <p>
+    Miners once carried canary birds underground. If the bird stopped singing, danger was near.
+    A canary token works the same way: it is a file that nobody should ever open. If someone does,
+    CanaryTrap knows right away.
+  </p>
+</div>
+
+<div class="card">
+  <h2>How the project works</h2>
+  <ol>
+    <li>You enter a file name, the folder to protect and a file type.</li>
+    <li>The server creates a unique random token ID (a UUID) and stores it in an SQLite database.</li>
+    <li>You download the token file and place it in the folder you want to monitor.</li>
+    <li>The file contains a small hidden link back to CanaryTrap. When someone opens the file, their device requests that link.</li>
+    <li>CanaryTrap records the date, time, IP address and browser, shows an alert, and updates the folder's risk percentage.</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h2>Folder risk percentage</h2>
+  <p>
+    The risk is built from three parts: up to <strong>60 points</strong> for the share of tokens opened by someone else,
+    <strong>10 points</strong> for each other-user open (up to 30), and <strong>10 points</strong> if an other-user open
+    happened in the last 24 hours. Opens from devices you marked as yours are ignored.
+  </p>
+  <p><em>Example:</em> one token in a folder, opened by another user a few minutes ago: 60 + 10 + 10 = <strong>80% (Critical)</strong>.</p>
+  <table>
+    <thead><tr><th>Score</th><th>Level</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>0 – 19%</td><td>Low</td><td>No suspicious opens</td></tr>
+      <tr><td>20 – 49%</td><td>Medium</td><td>Some opens by others, but not recent</td></tr>
+      <tr><td>50 – 79%</td><td>High</td><td>Several opens by others, or recent activity</td></tr>
+      <tr><td>80 – 100%</td><td>Critical</td><td>Recent, repeated access by someone else. Investigate now.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Risk levels on every screen</h2>
+  <table>
+    <thead><tr><th>Where</th><th>What it shows</th><th>How it is calculated</th></tr></thead>
+    <tbody>
+      <tr><td>Navigation bar</td><td>Overall system risk</td><td>The highest risk of any folder</td></tr>
+      <tr><td>Folder cards</td><td>Risk of one folder</td><td>The folder formula above</td></tr>
+      <tr><td>Token table</td><td>How often one file was opened by others</td><td>25% for each open by another user (maximum 100%)</td></tr>
+      <tr><td>Alerts</td><td>Severity of a single open</td><td>The token's level at the moment of that open. Your own device is always Low.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Technology used</h2>
+  <p>
+    Frontend: HTML, CSS and JavaScript · Backend: Python with Flask · Database: SQLite ·
+    Token IDs: Python's <code>uuid</code> module (cryptographically random)
+  </p>
+</div>
+
+<div class="card">
+  <h2>Limitations (honest notes)</h2>
+  <p>
+    This is a student prototype. It has no login system. "Your device" is recognized by IP address and browser,
+    so another person using the same browser on the same network could be treated as you. Antivirus or file-preview
+    tools can also open files and create false alerts.
+  </p>
+</div>
+{% endblock %}

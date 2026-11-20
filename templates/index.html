@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Catch intruders with digital canaries </h1>
+  <p>
+    CanaryTrap creates fake but realistic <strong>canary files</strong>. Place one inside a folder you
+    want to protect. If anyone opens it, CanaryTrap records the time and device, shows an alert,
+    and raises the folder's risk percentage.
+  </p>
+  <div class="actions">
+    <a class="btn" href="{{ url_for('generate_page') }}">Generate a Canary Token</a>
+    <a class="btn btn-outline" href="{{ url_for('dashboard_page') }}">Open Dashboard</a>
+    <a class="btn btn-outline" href="{{ url_for('present_page') }}">Live monitor</a>
+  </div>
+</section>
+
+<section class="grid-3">
+  <div class="card step-1">
+    <div class="step-icon">01</div>
+    <h3>1. Create</h3>
+    <p>Choose a file name, the folder to protect and the file type.</p>
+  </div>
+  <div class="card step-2">
+    <div class="step-icon">02</div>
+    <h3>2. Place</h3>
+    <p>Download the token file and put it in the folder you want to monitor.</p>
+  </div>
+  <div class="card step-3">
+    <div class="step-icon">03</div>
+    <h3>3. Detect</h3>
+    <p>When someone opens it, you get an alert and the folder's risk percentage goes up.</p>
+  </div>
+</section>
+{% endblock %}

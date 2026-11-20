@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CanaryTrap{% endblock %} | CanaryTrap</title>
+  <script>
+    try {
+      const saved = localStorage.getItem("canary-theme");
+      const dark = saved ? saved === "dark" : false;
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+    } catch (e) { document.documentElement.dataset.theme = "light"; }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <a href="{{ url_for('home') }}" class="brand"><span class="brand-dot"></span>CanaryTrap</a>
+    <nav>
+      <a href="{{ url_for('home') }}" class="{{ 'active' if request.endpoint == 'home' else '' }}">Home</a>
+      <a href="{{ url_for('generate_page') }}" class="{{ 'active' if request.endpoint == 'generate_page' else '' }}">Generate Token</a>
+      <a href="{{ url_for('dashboard_page') }}" class="{{ 'active' if request.endpoint == 'dashboard_page' else '' }}">Dashboard</a>
+      <a href="{{ url_for('alerts_page') }}" class="{{ 'active' if request.endpoint == 'alerts_page' else '' }}">Alerts</a>
+      <a href="{{ url_for('present_page') }}" class="{{ 'active' if request.endpoint == 'present_page' else '' }}"><span class="live-dot"></span>Live</a>
+      <a href="{{ url_for('about_page') }}" class="{{ 'active' if request.endpoint == 'about_page' else '' }}">About</a>
+      <button class="theme-toggle" data-action="theme" aria-label="Switch dark and light mode" title="Dark or light mode">Dark</button>
+      <span id="system-risk" class="risk-pill level-low">● Risk: checking…</span>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>CanaryTrap · Student cybersecurity project</footer>
+
+  <div id="toast-area"></div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/live.js') }}"></script>
+  {% block scripts %}{% endblock %}
+<div class="made-by">Made by <b>Priyani Singh</b></div>
+</body>
+</html>

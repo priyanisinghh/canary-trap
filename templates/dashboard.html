@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p class="muted">Updates automatically. <span id="last-updated"></span></p>
+
+<div class="toolbar">
+  <button class="btn" data-action="simulate">Simulate intruder <kbd>S</kbd></button>
+  <a class="btn btn-outline" href="{{ url_for('present_page') }}">Live monitor</a>
+  <button class="btn btn-outline" data-action="sound"><span class="lbl">Sound</span> <kbd>M</kbd></button>
+  <a class="btn btn-outline" href="{{ url_for('risk_report') }}">↓ Download report</a>
+  <a class="btn btn-outline" href="{{ url_for('risk_report_csv') }}">CSV</a>
+  <button class="btn btn-danger" data-action="reset">↺ Reset demo</button>
+</div>
+
+<div id="system-banner" class="banner level-low">Checking risk…</div>
+
+<div class="legend">
+  <span class="level-badge level-low">Low: under 20%</span>
+  <span class="level-badge level-medium">Medium: 20–49%</span>
+  <span class="level-badge level-high">High: 50–79%</span>
+  <span class="level-badge level-critical">Critical: 80%+</span>
+</div>
+
+<div id="stats" class="stats"></div>
+
+<h2>Folder risk</h2>
+<div id="folders" class="grid-3"></div>
+
+<h2>Canary tokens</h2>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>File</th><th>Folder</th><th>Type</th><th>Created</th><th>Status</th><th>Risk</th><th>Last opened</th>
+      </tr>
+    </thead>
+    <tbody id="tokens-body">
+      <tr><td colspan="7" class="muted">Loading…</td></tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

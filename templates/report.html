@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CanaryTrap Risk Report</title>
+  <style>
+    :root { --violet: #7c3aed; --pink: #ec4899; --ink: #1e1b2e; --muted: #6b6785; --line: #ece8f7; --bg: #fbf9ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 36px 28px 56px; }
+    .head {
+      padding: 30px 32px; border-radius: 20px; color: #fff;
+      background: linear-gradient(135deg, #7c3aed 0%, #c026d3 55%, #ec4899 100%);
+      box-shadow: 0 18px 40px -18px rgba(124, 58, 237, .6);
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .head h1 { margin: 0 0 6px; font-size: 1.9rem; letter-spacing: -.02em; }
+    .head p { margin: 0; opacity: .92; }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 22px 0 6px; }
+    .kpi { padding: 16px 18px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+    .kpi span { display: block; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+    .kpi b { display: block; margin-top: 6px; font-size: 1.6rem; }
+    h2 { margin: 28px 0 10px; color: var(--violet); font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; font-size: .88rem; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: linear-gradient(90deg, #f3e8ff, #fce7f3); color: #6d28d9; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+    .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; color: #fff; font-size: .72rem; font-weight: 700; }
+    .lvl-low { background: #16a34a; } .lvl-medium { background: #d97706; } .lvl-high { background: #ea580c; } .lvl-critical { background: #dc2626; }
+    .empty { padding: 18px; color: var(--muted); background: #fff; border: 1px dashed var(--line); border-radius: 14px; }
+    .foot { margin-top: 30px; text-align: center; color: var(--muted); font-size: .8rem; }
+    .foot b { background: linear-gradient(90deg, #7c3aed, #ec4899); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    @media print { body { background: #fff; } .kpi, table, .empty { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>Risk Raised Report</h1>
+    <p>CanaryTrap · generated {{ generated_at }}</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><span>Overall risk · {{ system_risk.level }}</span><b>{{ system_risk.percent }}%</b></div>
+    <div class="kpi"><span>Canary tokens</span><b>{{ tokens|length }}</b></div>
+    <div class="kpi"><span>Risk raised</span><b>{{ raised|length }}</b></div>
+    <div class="kpi"><span>Own-device opens</span><b>{{ own_count }}</b></div>
+  </div>
+
+  <h2>Folder risk</h2>
+  {% if folders %}
+  <table>
+    <thead><tr><th>Folder</th><th>Risk level</th><th>Risk</th></tr></thead>
+    <tbody>
+    {% for f in folders %}
+      <tr><td>{{ f.name }}</td><td><span class="pill lvl-{{ f.risk_level|lower }}">{{ f.risk_level }}</span></td><td>{{ f.risk_percent }}%</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">No folders are being monitored yet.</div>
+  {% endif %}
+
+  <h2>Risk raised by alerts</h2>
+  {% if raised %}
+  <table>
+    <thead><tr><th>Time</th><th>Token file</th><th>Folder</th><th>IP address</th><th>Device</th><th>Severity</th></tr></thead>
+    <tbody>
+    {% for a in raised %}
+      <tr>
+        <td>{{ a.triggered_at }}</td>
+        <td>{{ a.file_name or "(deleted token)" }}</td>
+        <td>{{ a.folder or "-" }}</td>
+        <td>{{ a.ip_address }}</td>
+        <td>{{ a.user_agent or "-" }}</td>
+        <td><span class="pill lvl-{{ a.severity|lower }}">{{ a.severity }}</span></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">No outside opens recorded. Nothing has raised risk yet.</div>
+  {% endif %}
+
+  <div class="foot">CanaryTrap · Made by <b>Priyani Singh</b></div>
+</div>
+</body>
+</html>

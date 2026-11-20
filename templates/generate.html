@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Generate Token{% endblock %}
+
+{% block content %}
+<h1>Generate a Canary Token</h1>
+<p class="muted">Step 1 and 2: choose the details. CanaryTrap creates a unique token for you.</p>
+
+<form id="token-form" class="card form">
+  <label>
+    File name
+    <input name="file_name" placeholder="e.g. Salary_2026" required maxlength="50">
+  </label>
+
+  <label>
+    Folder to monitor
+    <input name="folder" placeholder="e.g. Finance" value="General" maxlength="40">
+  </label>
+
+  <label>
+    Token type
+    <select name="token_type">
+      {% for key, label in token_types.items() %}
+        <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <button type="submit" class="btn">Generate Token</button>
+  <p id="form-message" class="message"></p>
+</form>
+
+<div id="result" class="card hidden">
+  <h2>Token created!</h2>
+  <p>Token ID: <code id="token-id"></code></p>
+  <p><a id="download-link" class="btn" href="#">Download token file</a></p>
+  <h3>What to do next</h3>
+  <ol>
+    <li>Save the downloaded file.</li>
+    <li>Move it into the folder you want to monitor (for example <em>Finance</em>).</li>
+    <li>Wait. When someone opens it, an alert appears on the Dashboard and the Alerts page.</li>
+  </ol>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/generate.js') }}"></script>
+{% endblock %}

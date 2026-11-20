@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Live monitor{% endblock %}
+
+{% block content %}
+<div class="present-head">
+  <div>
+    <h1>Live monitor</h1>
+    <p class="muted" id="present-tokens">Loading…</p>
+  </div>
+  <div class="toolbar">
+    <button class="btn" data-action="simulate">Simulate intruder <kbd>S</kbd></button>
+    <a class="btn btn-outline" href="{{ url_for('risk_report') }}">↓ Download report</a>
+    <button class="btn btn-outline" data-action="fullscreen">Fullscreen <kbd>F</kbd></button>
+    <button class="btn btn-outline" data-action="sound"><span class="lbl">Sound</span> <kbd>M</kbd></button>
+  </div>
+</div>
+
+<div class="present-grid">
+  <section class="card gauge-card">
+    <h2>Overall risk</h2>
+    <div id="gauge" class="gauge level-low" style="--pct: 0">
+      <div class="gauge-inner">
+        <div id="gauge-value">0%</div>
+        <div id="gauge-label">checking…</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Folders</h2>
+    <div id="present-folders"></div>
+    <h2>Live feed</h2>
+    <ul id="feed" class="feed"></ul>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/present.js') }}"></script>
+{% endblock %}
